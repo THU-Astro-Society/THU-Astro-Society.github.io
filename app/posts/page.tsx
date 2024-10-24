@@ -39,7 +39,7 @@ export default function Page() {
             {createBorder(posts[0].date.getFullYear().toString())}
             <ul className="list-disc pl-6 space-y-4">
               {posts.map((post, index) => (
-                <li key={index}>
+                <li>
                   <a
                     href={`/posts/${post.id}`}
                     className="text-black hover:underline"
