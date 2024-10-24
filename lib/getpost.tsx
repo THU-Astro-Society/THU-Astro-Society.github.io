@@ -5,18 +5,14 @@ import remarkGfm from 'remark-gfm';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import remarkMath from 'remark-math';
-import rehypeStringify from 'rehype-stringify'
-import rehypePresetMinify from 'rehype-preset-minify'
-import remarkFrontmatter from 'remark-frontmatter'
 import rehypeKatex from 'rehype-katex'
-import { remarkAlert } from 'remark-github-blockquote-alert'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeReact from 'rehype-react'
 import matter from 'gray-matter';
 import "highlight.js/styles/tokyo-night-dark.css"; // import css file for code highlight theme.
 import "katex/dist/katex.css"; // import css file for formula blocks.
 
-interface PostData {
+export interface PostData {
   id: string,
   content: JSX.Element,
   title: string,
@@ -28,9 +24,7 @@ export function getAllPostIds(directory: string) {
   const fileNames = fs.readdirSync(directory);
   return fileNames.map((fileName) => {
     return {
-      params: {
-        id: fileName.replace(/\.md$/, ''),
-      },
+      id: fileName.replace(/\.md$/, ''),
     }
   });
 }
@@ -71,7 +65,7 @@ export function getPostData(directory: string, id: string): PostData {
 export function getAllPostData(directory: string): PostData[] {
   const post_ids = getAllPostIds(directory);
   const posts = post_ids.map((post) => {
-    return getPostData(directory, post.params.id);
+    return getPostData(directory, post.id);
   });
   return posts;
 }

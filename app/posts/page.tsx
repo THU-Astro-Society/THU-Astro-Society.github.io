@@ -1,7 +1,7 @@
-import Link from 'next/link';
-import NavBar from '@/app/navbar';
-import {PostData, getAllPostIds, getAllPostData} from '@/lib/getpost';
+import {PostData, getAllPostData} from '@/lib/getpost';
 import ArticleLayout from "@/app/article_layout";
+
+const post_dir = process.env.POSTS_DIR ?? "@/posts";
 
 function createBorder(message: string) {
   return (
@@ -17,7 +17,7 @@ function createBorder(message: string) {
 
 
 export default function Page() {
-  const posts = getAllPostData(process.env.POSTS_DIR)
+  const posts = getAllPostData(post_dir)
   const region: PostData[][] = [];
   
   /* 按照时间降序排序 */
@@ -31,7 +31,7 @@ export default function Page() {
     }
   });
   return (
-    <ArticleLayout navbar_id={process.env.NAVBAR_POSTS}>
+    <ArticleLayout navbar_id={Number(process.env.NAVBAR_POSTS)}>
       {posts.length >= 1 ? <></> : createBorder(".")}
       {
         region.map((posts) => (
@@ -39,7 +39,7 @@ export default function Page() {
             {createBorder(posts[0].date.getFullYear().toString())}
             <ul className="list-disc pl-6 space-y-4">
               {posts.map((post, index) => (
-                <li>
+                <li key={index}>
                   <a
                     href={`/posts/${post.id}`}
                     className="text-black hover:underline"
