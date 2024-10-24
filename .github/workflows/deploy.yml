@@ -28,6 +28,7 @@ jobs:
   # Build job
   build:
     runs-on: ubuntu-latest
+    # isntall packages, node, setup page, restore cache
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -88,6 +89,7 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     needs: build
+    # deploy to github pages
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
