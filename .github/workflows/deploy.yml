@@ -30,10 +30,10 @@ jobs:
     runs-on: ubuntu-latest
     # isntall packages, node, setup page, restore cache
     steps:
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
 
-        name: Detect package manager
+      - name: Detect package manager
         id: detect-package-manager
         run: |
           if [ -f "${{ github.workspace }}/yarn.lock" ]; then
@@ -51,16 +51,16 @@ jobs:
             exit 1
           fi
 
-        name: Setup Node
+      - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: "lts/*"
           cache: ${{ steps.detect-package-manager.outputs.manager }}
 
-        name: Setup Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v4
 
-        name: Restore cache
+      - name: Restore cache
         uses: actions/cache@v4
         with:
           path: |
@@ -71,13 +71,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
 
-        name: Install dependencies
+      - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
 
-        name: Build with Next.js
+      - name: Build with Next.js
         run: ${{ steps.detect-package-manager.outputs.runner }} next build
 
-        name: Upload artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./out
@@ -91,5 +91,6 @@ jobs:
     needs: build
     # deploy to github pages
     steps:
-        name: Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
         id: deployment
+        uses: actions/deploy-pages@v4
