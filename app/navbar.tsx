@@ -1,11 +1,30 @@
+'use client'
+
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+import { useState, useEffect } from 'react'
 
 interface NavBarProps {
   currentId: number;
 }
 
 export default function NavBar(params: NavBarProps) {
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.scrollY;
+      
+      // 向上滚动时显示，向下滚动时隐藏
+      setVisible(prevScrollPos > currentScrollPos || currentScrollPos < 10);
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [prevScrollPos]);
+
   const navItems = [
     { name: 'Home', href: '/', current: false },
     { name: '活动记录', href: '/posts', current: false },
@@ -16,11 +35,13 @@ export default function NavBar(params: NavBarProps) {
     }
     return item;
   });
+
   return (
     /* Disclosure里面DisclosureButton是触发器，触发对应的DisclosurePanel */
     <Disclosure as="nav" className="bg-gray-800 w-full shadow-lg top-0 fixed">
       <div className="mx-auto px-2 sm:px-6 lg:px-8">
-        <div className="relative flex h-16 items-center justify-between">
+        <div className={`relative flex items-center justify-between h-16 transition-all duration-300 ease-in-out
+          ${visible ? 'sm:h-28' : 'sm:h-16'}`}> 
           {/*小屏幕时使用*/}
           <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
             {/* Mobile menu button*/}
@@ -31,27 +52,54 @@ export default function NavBar(params: NavBarProps) {
               <XMarkIcon aria-hidden="true" className="hidden h-6 w-6 group-data-[open]:block" />
             </DisclosureButton>
           </div>
+
+          {/* Icon for large screens */}
+          <div className="absolute top-3 left-1/2 -translate-x-1/2 hidden sm:block">
+            <img 
+              src="/assets/icons/android-chrome-512x512.png" 
+              alt="TAS Logo" 
+              className="w-10 h-10"
+            />
+          </div>
+
           {/*大屏幕时使用*/}
-          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-            <div className="hidden sm:ml-6 sm:block">
-              <div className="flex space-x-4">
-                {navItems.map((item) => (
-                  <a
-                    key={item.name}
-                    href={item.href}
-                    aria-current={item.current ? 'page' : undefined}
-                    className={
-                      (item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
-                      + ' rounded-md px-3 py-2 text-sm font-medium'
-                    }
-                  >
-                    {item.name}
-                  </a>
-                ))}
+          <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-center">
+            <div className="hidden sm:block">
+              <div className="flex flex-col items-center pt-14"> {/* 增加顶部padding为icon留出空间 */}
+                {/* NavItems */}
+                <div 
+                  className={`flex space-x-4 transition-all duration-300 ease-in-out transform ${
+                    visible 
+                      ? 'opacity-100 translate-y-0' 
+                      : 'opacity-0 -translate-y-4 pointer-events-none'
+                  }`}
+                >
+                  {navItems.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      aria-current={item.current ? 'page' : undefined}
+                      className={
+                        (item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white')
+                        + ' rounded-md px-3 py-2 text-sm font-medium'
+                      }
+                    >
+                      {item.name}
+                    </a>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-          
+
+          {/* Icon for mobile screens */}
+          <div className="absolute inset-y-0 left-1/2 flex items-center sm:hidden -translate-x-1/2">
+            <img 
+              src="/assets/icons/android-chrome-192x192.png" 
+              alt="TAS Logo" 
+              className="w-8 h-8"
+            />
+          </div>
         </div>
       </div>
       
