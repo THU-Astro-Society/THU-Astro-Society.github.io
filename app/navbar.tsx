@@ -3,6 +3,7 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface NavBarProps {
   currentId: number;
@@ -26,7 +27,7 @@ export default function NavBar(params: NavBarProps) {
   }, [prevScrollPos]);
 
   const navItems = [
-    { name: 'Home', href: '/', current: false },
+    { name: '主页', href: '/', current: false },
     { name: '活动记录', href: '/posts', current: false },
     { name: '协会介绍', href: '#', current: false },
   ].map((item, index) => {
@@ -55,11 +56,15 @@ export default function NavBar(params: NavBarProps) {
 
           {/* Icon for large screens */}
           <div className="absolute top-3 left-1/2 -translate-x-1/2 hidden sm:block">
-            <img 
-              src="/assets/icons/android-chrome-512x512.png" 
-              alt="TAS Logo" 
-              className="w-10 h-10"
-            />
+            <a href="/">
+              <Image 
+                src="/assets/icons/android-chrome-512x512.png" 
+                alt="TAS Logo" 
+                width={40}
+                height={40}
+                className="w-10 h-10"
+              />
+            </a>
           </div>
 
           {/*大屏幕时使用*/}
@@ -94,11 +99,15 @@ export default function NavBar(params: NavBarProps) {
 
           {/* Icon for mobile screens */}
           <div className="absolute inset-y-0 left-1/2 flex items-center sm:hidden -translate-x-1/2">
-            <img 
-              src="/assets/icons/android-chrome-192x192.png" 
-              alt="TAS Logo" 
-              className="w-8 h-8"
-            />
+            <a href="/">
+              <Image 
+                src="/assets/icons/android-chrome-192x192.png" 
+                alt="TAS Logo" 
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </a>
           </div>
         </div>
       </div>
