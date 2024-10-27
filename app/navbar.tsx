@@ -31,7 +31,8 @@ export default function NavBar(params: NavBarProps) {
     { name: '近期活动', href: '/events', current: false },
     { name: '活动记录', href: '/posts', current: false },
     { name: '星空画廊', href: '/gallery', current: false },
-    { name: '关于我们', href: '/about', current: false },
+    { name: '协会介绍', href: '#', current: false },
+    { name: '加入我们', href: '#', current: false }
   ].map(item => ({
     ...item,
     // 修改匹配逻辑：检查当前路径是否以导航项的 href 开头
@@ -41,7 +42,7 @@ export default function NavBar(params: NavBarProps) {
 
   return (
     /* Disclosure里面DisclosureButton是触发器，触发对应的DisclosurePanel */
-    <Disclosure as="nav" className="bg-gray-800 w-full shadow-lg top-0 fixed">
+    <Disclosure as="nav" className="bg-gray-800 w-full shadow-lg top-0 fixed z-[99]">
       <div className="mx-auto px-2 sm:px-6 lg:px-8">
         <div className={`relative flex items-center justify-between h-16 transition-all duration-300 ease-in-out
           ${visible ? 'sm:h-28' : 'sm:h-16'}`}> 

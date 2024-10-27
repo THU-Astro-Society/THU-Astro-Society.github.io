@@ -3,9 +3,9 @@ import ArticleLayout from "./article_layout";
 export default function Home() {
   return (
     <ArticleLayout currentPath="/">
-      <p> 喵喵喵 </p>
-      <p> 喵喵喵 </p>
-      <p> 喵喵喵 </p>
+      <center> 喵喵喵 </center>
+      <center> 喵喵喵 </center>
+      <center> 喵喵喵 </center>
     </ArticleLayout>
   );
 }
