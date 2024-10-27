@@ -31,7 +31,7 @@ export default function Page() {
     }
   });
   return (
-    <ArticleLayout navbar_id={Number(process.env.NAVBAR_POSTS)}>
+    <ArticleLayout currentPath="/posts">
       {posts.length >= 1 ? <></> : createBorder(".")}
       {
         region.map((posts) => (

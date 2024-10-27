@@ -3,9 +3,10 @@
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { useState, useEffect } from 'react'
+import Image from 'next/image'
 
 interface NavBarProps {
-  currentId: number;
+  currentPath: string;  // 改用路径而不是 ID
 }
 
 export default function NavBar(params: NavBarProps) {
@@ -26,19 +27,22 @@ export default function NavBar(params: NavBarProps) {
   }, [prevScrollPos]);
 
   const navItems = [
-    { name: 'Home', href: '/', current: false },
+    { name: '主页', href: '/', current: false },
+    { name: '近期活动', href: '/events', current: false },
     { name: '活动记录', href: '/posts', current: false },
+    { name: '星空画廊', href: '/gallery', current: false },
     { name: '协会介绍', href: '#', current: false },
-  ].map((item, index) => {
-    if (index == params.currentId) {
-      return { ...item, current: true };
-    }
-    return item;
-  });
+    { name: '加入我们', href: '#', current: false }
+  ].map(item => ({
+    ...item,
+    // 修改匹配逻辑：检查当前路径是否以导航项的 href 开头
+    current: params.currentPath === item.href || 
+             (item.href !== '/' && params.currentPath.startsWith(item.href))
+  }));
 
   return (
     /* Disclosure里面DisclosureButton是触发器，触发对应的DisclosurePanel */
-    <Disclosure as="nav" className="bg-gray-800 w-full shadow-lg top-0 fixed">
+    <Disclosure as="nav" className="bg-gray-800 w-full shadow-lg top-0 fixed z-[99]">
       <div className="mx-auto px-2 sm:px-6 lg:px-8">
         <div className={`relative flex items-center justify-between h-16 transition-all duration-300 ease-in-out
           ${visible ? 'sm:h-28' : 'sm:h-16'}`}> 
@@ -55,11 +59,15 @@ export default function NavBar(params: NavBarProps) {
 
           {/* Icon for large screens */}
           <div className="absolute top-3 left-1/2 -translate-x-1/2 hidden sm:block">
-            <img 
-              src="/assets/icons/android-chrome-512x512.png" 
-              alt="TAS Logo" 
-              className="w-10 h-10"
-            />
+            <a href="/">
+              <Image 
+                src="/assets/icons/android-chrome-512x512.png" 
+                alt="TAS Logo" 
+                width={40}
+                height={40}
+                className="w-10 h-10"
+              />
+            </a>
           </div>
 
           {/*大屏幕时使用*/}
@@ -94,11 +102,15 @@ export default function NavBar(params: NavBarProps) {
 
           {/* Icon for mobile screens */}
           <div className="absolute inset-y-0 left-1/2 flex items-center sm:hidden -translate-x-1/2">
-            <img 
-              src="/assets/icons/android-chrome-192x192.png" 
-              alt="TAS Logo" 
-              className="w-8 h-8"
-            />
+            <a href="/">
+              <Image 
+                src="/assets/icons/android-chrome-192x192.png" 
+                alt="TAS Logo" 
+                width={32}
+                height={32}
+                className="w-8 h-8"
+              />
+            </a>
           </div>
         </div>
       </div>

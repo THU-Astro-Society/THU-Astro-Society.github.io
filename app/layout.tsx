@@ -7,7 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <html>
-      <title>THU天协</title>
+      <title>清华大学学生天文协会 THU Astronomy Association</title>
       <head>
         {/*网页描述*/}
         <meta name="description" content="清华大学学生天文协会" />
