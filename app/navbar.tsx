@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react'
 import Image from 'next/image'
 
 interface NavBarProps {
-  currentId: number;
+  currentPath: string;  // 改用路径而不是 ID
 }
 
 export default function NavBar(params: NavBarProps) {
@@ -28,14 +28,16 @@ export default function NavBar(params: NavBarProps) {
 
   const navItems = [
     { name: '主页', href: '/', current: false },
+    { name: '近期活动', href: '/events', current: false },
     { name: '活动记录', href: '/posts', current: false },
-    { name: '协会介绍', href: '#', current: false },
-  ].map((item, index) => {
-    if (index == params.currentId) {
-      return { ...item, current: true };
-    }
-    return item;
-  });
+    { name: '星空画廊', href: '/gallery', current: false },
+    { name: '关于我们', href: '/about', current: false },
+  ].map(item => ({
+    ...item,
+    // 修改匹配逻辑：检查当前路径是否以导航项的 href 开头
+    current: params.currentPath === item.href || 
+             (item.href !== '/' && params.currentPath.startsWith(item.href))
+  }));
 
   return (
     /* Disclosure里面DisclosureButton是触发器，触发对应的DisclosurePanel */
